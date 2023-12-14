@@ -24,9 +24,8 @@ class Calculation
         $totalContainerVolume = 0;
         $containerCounts = [];
         foreach ($this->containers as $container) {
-            $containerVolume = $container->availableSpace;
-            while ($totalContainerVolume + $containerVolume <= $totalPackageVolume) {
-                $totalContainerVolume += $containerVolume;
+            while ($totalContainerVolume + $container->volume() <= $totalPackageVolume) {
+                $totalContainerVolume += $container->volume();
                 $containerCounts[get_class($container)] = ($containerCounts[get_class($container)] ?? 0) + 1;
             }
         }

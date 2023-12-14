@@ -1,0 +1,19 @@
+{
+    "name": "argatu/cargo-puzzle",
+    "description": "Container surface calculation",
+    "type": "project",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Argatu\\CargoPuzzle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nicolae",
+            "email": "nicolaepascaneanu@gmail.com"
+        }
+    ]
+}

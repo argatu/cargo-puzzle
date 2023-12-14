@@ -131,59 +131,24 @@ $thirdPackages = [
     new Package(60  , 80, 150),
     new Package(60  , 80, 150),
     new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(80, 100, 200),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-    new Package(60  , 80, 150),
-
-
+    new Package(60  , 80, 150)
 ];
 
-$firstTransport = new Calculation($firstPackages, [
-    new Container(234.8, 238.44, 1203.1),
-    new Container(234.8, 238.44, 279.4)
-]);
-$secondTransport = new Calculation($secondPackages, [
-    new Container(234.8, 238.44, 1203.1),
-    new Container(234.8, 238.44, 279.4)
-]);
-$thirdTransport = new Calculation($thirdPackages, [
-    new Container(234.8, 238.44, 1203.1),
-    new Container(234.8, 238.44, 279.4)
-]);
+$containers = [
+    new Container(234.8, 238.44, 1203.1),  // 40ft Standard Dry Container
+    new Container(234.8, 238.44, 279.4)    // 10ft Standard Dry Container
+];
 
-echo 'First transport needs ' . $firstTransport->calculateContainers() . ' containers' . PHP_EOL;
-echo 'Second transport needs ' . $secondTransport->calculateContainers() . ' containers' . PHP_EOL;
-echo 'Third transport needs ' . $thirdTransport->calculateContainers() . ' containers' . PHP_EOL;
+$transports = [
+    'Transport 1' => $firstPackages,
+    'Transport 2' => $secondPackages,
+    'Transport 3' => $thirdPackages
+];
+
+foreach ($transports as $name => $packages) {
+    $containerCounts = (new Calculation($packages, $containers))->calculateContainers();
+
+    foreach ($containerCounts as $count) {
+        echo $name . " needs " . $count . " containers\n";
+    }
+}

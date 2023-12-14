@@ -12,41 +12,29 @@ class Calculation
     /**
      * Calculate the number of containers needed to fit all packages.
      *
-     * @return int
+     * @return array
      */
-    public function calculateContainers(): int
+    public function calculateContainers(): array
     {
-        $usedContainers = 1;
-
-        usort($this->packages, function($a, $b) {
-            return $b->volume() <=> $a->volume();
-        });
-
+        $totalPackageVolume = 0;
         foreach ($this->packages as $package) {
-            $fit = false;
+            $totalPackageVolume += $package->volume();
+        }
 
-            foreach ($this->containers as $container) {
-                if ($container->addPackage($package)) {
-                    $fit = true;
-                } else {
-                    // If the package doesn't fit in the current container, the container is full, and we increase the number of used containers
-                    $usedContainers++;
-                }
-                break;
-            }
-
-            if (!$fit) {
-                // If no more containers are available, create a new one based on first container dimensions
-                $container = new Container(
-                    $this->containers[0]->width,
-                    $this->containers[0]->height,
-                    $this->containers[0]->length
-                );
-                $container->addPackage($package);
-                $this->containers[] = $container;
+        $totalContainerVolume = 0;
+        $containerCounts = [];
+        foreach ($this->containers as $container) {
+            $containerVolume = $container->availableSpace;
+            while ($totalContainerVolume + $containerVolume <= $totalPackageVolume) {
+                $totalContainerVolume += $containerVolume;
+                $containerCounts[get_class($container)] = ($containerCounts[get_class($container)] ?? 0) + 1;
             }
         }
 
-        return $usedContainers;
+        if (empty($containerCounts)) {
+            $containerCounts[get_class($this->containers[0])] = 1;
+        }
+
+        return $containerCounts;
     }
 }
